@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Patient Registration</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Patient Registration</h1>
+  <form id="registerForm">
+    <input name="name" placeholder="Name" required />
+    <input name="age" placeholder="Age" type="number" required />
+    <select name="gender">
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+    <button type="submit">Register</button>
+  </form>
+
+  <h2>Patients:</h2>
+  <ul id="output"></ul>
+
+  <h2>Run Raw SQL:</h2>
+  <textarea id="sqlInput" rows="4" cols="50"></textarea><br>
+  <button id="runSql">Execute</button>
+  <pre id="sqlResult"></pre>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
