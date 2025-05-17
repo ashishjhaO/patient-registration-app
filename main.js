@@ -1,3 +1,4 @@
+import './style.css';
 import { initDB } from './db.js';
 
 let db;

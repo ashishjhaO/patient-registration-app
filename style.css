@@ -1,112 +1,143 @@
 /* styles.css */
 
-/* Global resets & base */
-* {
+/* Color palette */
+:root {
+    --color-primary: #4c6ef5;
+    --color-primary-dark: #364fc7;
+    --color-secondary: #a5d8ff;
+    --color-bg: #f1f3f5;
+    --color-card: #ffffff;
+    --color-text: #343a40;
+    --color-muted: #868e96;
+  }
+  
+  /* Global reset & base */
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f8;
-    color: #333;
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     line-height: 1.6;
   }
   
-  /* Headings */
-  h1, h2 {
-    color: #2c3e50;
-    margin-bottom: 0.75rem;
-  }
-  
-  /* Form container */
-  form {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  /* Header */
+  header {
+    background: var(--color-primary);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 0 0 16px 16px;
     margin-bottom: 2rem;
   }
-  .form-group {
+  header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  header .subtitle {
+    font-weight: 300;
+  }
+  
+  /* Main container */
+  .container {
+    width: min(90%, 700px);
+    margin: auto;
+    margin-bottom: 4rem;
+  }
+  
+  /* Card */
+  .card {
+    background: var(--color-card);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .card h2 {
+    font-weight: 600;
     margin-bottom: 1rem;
+    color: var(--color-primary-dark);
+  }
+  
+  /* Form */
+  .form-group {
+    margin-bottom: 1.25rem;
   }
   .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    font-weight: 600;
+    font-weight: 500;
   }
   .form-group input,
   .form-group select,
   #sqlInput {
     width: 100%;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 6px;
     font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  #sqlInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
   }
   
   /* Buttons */
-  button {
-    background: #3498db;
-    color: #fff;
+  .btn {
+    display: inline-block;
+    background: var(--color-primary);
+    color: white;
     border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
     font-size: 1rem;
-    transition: background 0.2s ease;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-align: center;
   }
-  button:hover {
-    background: #2980b9;
+  .btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+  }
+  .btn:active {
+    transform: translateY(0);
   }
   
   /* Patient list */
-  #output {
+  .patient-list {
     list-style: none;
     padding-left: 0;
   }
-  #output li {
-    background: #fff;
-    padding: 0.8rem 1rem;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  .patient-list li {
+    background: var(--color-secondary);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+    font-weight: 500;
   }
   
-  /* SQL section */
-  .sql-section {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
-  #sqlInput {
-    font-family: monospace;
-    font-size: 0.95rem;
-    resize: vertical;
-    min-height: 80px;
-  }
-  #sqlResult {
-    background: #ecf0f1;
+  /* SQL result */
+  .sql-result {
+    background: #e9ecef;
     padding: 1rem;
-    border-radius: 4px;
+    border-radius: 6px;
     margin-top: 1rem;
-    white-space: pre-wrap;
     font-family: monospace;
     font-size: 0.9rem;
+    white-space: pre-wrap;
+    color: var(--color-text);
   }
   
-  /* Responsive tweaks */
-  @media (max-width: 600px) {
-    body {
-      margin: 1rem;
-      padding: 0 0.5rem;
-    }
-    button {
-      width: 100%;
-    }
+  /* Responsive */
+  @media (max-width: 480px) {
+    header h1 { font-size: 1.5rem; }
+    .btn { width: 100%; }
   }
   
