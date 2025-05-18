@@ -7,13 +7,12 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <h1>🏥 Patient Registration</h1>
-    <p class="subtitle">Quickly add, view, and query patient records</p>
+    <p class="subtitle">Quickly add, then query patient records</p>
   </header>
 
   <main class="container">
@@ -57,12 +56,6 @@
       </form>
     </section>
 
-    <!-- Patient List Card -->
-    <section class="card">
-      <h2>Registered Patients</h2>
-      <ul id="output" class="patient-list"></ul>
-    </section>
-
     <!-- Raw SQL Card -->
     <section class="card">
       <h2>Run Raw SQL</h2>
@@ -72,7 +65,7 @@
         rows="4"
       ></textarea>
       <button id="runSql" class="btn">Execute</button>
-      <pre id="sqlResult" class="sql-result"></pre>
+      <div id="sqlResult" class="sql-result"></div>
     </section>
   </main>
 

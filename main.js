@@ -1,25 +1,38 @@
+// main.js
 import './style.css';
+// main.js
+
 import { initDB } from './db.js';
+// main.js
 
-let db;
+import { PGliteWorker } from '@electric-sql/pglite/worker';
 
-// HTML Elements
-const form     = document.querySelector('#registerForm');
-const output   = document.querySelector('#output');
-const sqlInput = document.querySelector('#sqlInput');
-const sqlResult= document.querySelector('#sqlResult');
-const runBtn   = document.querySelector('#runSql');
+// 1️⃣ Launch the shared PGlite worker instance
+const worker = new Worker(
+  new URL('./my-pglite-worker.js', import.meta.url),
+  { type: 'module' }
+);
 
-// BroadcastChannel for tab sync
+// 2️⃣ Proxy all DB calls through the worker
+const db = new PGliteWorker(worker);
+
+let lastQuery = ''; // store the last SQL query
+
+// 3️⃣ Grab DOM elements
+const form      = document.querySelector('#registerForm');
+const sqlInput  = document.querySelector('#sqlInput');
+const sqlResult = document.querySelector('#sqlResult');
+const runBtn    = document.querySelector('#runSql');
+
+// 4️⃣ Set up BroadcastChannel for cross-tab notifications
 const bc = new BroadcastChannel('patient-db');
+bc.onmessage = () => {
+  if (lastQuery) {
+    renderSQL(lastQuery);
+  }
+};
 
-// 1. Initialize DB and render existing records
-(async () => {
-  db = await initDB();
-  await renderPatients();
-})();
-
-// 2. Handle form submit: use db.query for parameterized INSERT
+// 5️⃣ Handle form submission: insert a patient and notify other tabs
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -27,43 +40,51 @@ form.addEventListener('submit', async (e) => {
   const age    = parseInt(form.age.value, 10);
   const gender = form.gender.value;
 
-  // INSERT with parameters via `.query()`
   await db.query(
     'INSERT INTO patients (name, age, gender) VALUES ($1, $2, $3)',
     [name, age, gender]
   );
-  console.log('Patient added:', { name, age, gender });
 
-  broadcastChange();   // notify other tabs
   form.reset();
-  await renderPatients();
-});
-
-// 3. Render patient list: `.query()` for SELECT
-async function renderPatients() {
-  const { rows } = await db.query('SELECT * FROM patients');
-  console.log('Fetched patients:', rows);
-
-  output.innerHTML = rows
-    .map(p => `<li>${p.name}, ${p.age}, ${p.gender}</li>`)
-    .join('');
-}
-
-// 4. Raw SQL execution (also via `.query()`)
-runBtn.addEventListener('click', async () => {
-  try {
-    const { rows } = await db.query(sqlInput.value);
-    sqlResult.textContent = JSON.stringify(rows, null, 2);
-  } catch (err) {
-    sqlResult.textContent = `Error: ${err.message}`;
-  }
-});
-
-// 5. BroadcastChannel helpers
-function broadcastChange() {
   bc.postMessage('refresh');
-}
+});
 
-bc.onmessage = () => {
-  renderPatients();
-};
+// 6️⃣ Handle “Execute” click: run the SQL, remember it, and render results
+runBtn.addEventListener('click', () => {
+  lastQuery = sqlInput.value.trim();
+  renderSQL(lastQuery);
+});
+
+// 7️⃣ Helper to run a SQL query and render it as a table
+async function renderSQL(query) {
+  try {
+    const { rows } = await db.query(query);
+
+    if (rows.length === 0) {
+      sqlResult.innerHTML = '<p>No results.</p>';
+      return;
+    }
+
+    // Build table header
+    const cols = Object.keys(rows[0]);
+    let html = '<table class="sql-table"><thead><tr>';
+    cols.forEach(col => {
+      html += `<th>${col}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    // Build table body
+    rows.forEach(row => {
+      html += '<tr>';
+      cols.forEach(col => {
+        html += `<td>${row[col]}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+
+    sqlResult.innerHTML = html;
+  } catch (err) {
+    sqlResult.innerHTML = `<p class="error">Error: ${err.message}</p>`;
+  }
+}
