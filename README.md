@@ -48,7 +48,7 @@ patient-registration-app/
 1. **Clone the repo**
 
    ```bash
-   git clone https://github.com/<your-username>/patient-registration-app.git
+   git clone https://github.com/ashishjhaO/patient-registration-app.git
    cd patient-registration-app
    ```
 
