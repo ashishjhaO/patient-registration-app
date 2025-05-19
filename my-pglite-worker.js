@@ -4,7 +4,18 @@ import { worker } from '@electric-sql/pglite/worker';
 
 worker({
   async init() {
-    // this PGlite instance will back all tabs
-    return new PGlite('idb://patient-db');
+    const db = new PGlite('idb://patient-db');
+
+    // ensure the patients table exists before any queries
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS patients (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        age INTEGER,
+        gender TEXT
+      )
+    `);
+
+    return db;
   },
 });
