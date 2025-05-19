@@ -1,4 +1,3 @@
-﻿# patient-registration-app
 # Patient Registration App
 
 A frontend-only patient registration application using PGlite (PostgreSQL in WASM) for in-browser data storage, synchronized across multiple tabs via a shared Web Worker.
