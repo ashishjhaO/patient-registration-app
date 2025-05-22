@@ -152,10 +152,4 @@ You can deploy to Vercel, Netlify, or similar static-hosting platforms:
 
 ---
 
-## 📝 License
-
-MIT © <Your Name>
-
----
-
 *Happy coding!*
